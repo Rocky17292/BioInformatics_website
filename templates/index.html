@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Molecular Structure Generator</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+     <style>
+        /* Add carousel styling */
+        .carousel {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background-color: #f2f2f2; /* Background color for carousel */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Drop shadow */
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slide {
+            min-width: 100%;
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff; /* Background color for slides */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Drop shadow */
+        }
+
+        /* Optional: Add styling for slide content */
+        .slide h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .slide p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .slide {
+    min-width: 100%;
+    flex: 1;
+    padding: 20px; /* Padding for the content inside the slide */
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+}
+
+/* Optional: Add styling for slide content */
+.slide h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center; /* Center the heading text */
+}
+
+.slide p {
+    color: #666;
+    font-size: 16px;
+    text-align: center; /* Center the paragraph text */
+}
+
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+</div>
+
+  <div class="carousel">
+        <div class="carousel-inner">
+            <div class="slide">
+                <h2>Welcome to Molecular Structure Generator</h2>
+                <p>Generate 2D, 3D, .mol, .pdb, and .sdf structures with ease!</p>
+            </div>
+            <div class="slide">
+                <h2>2D Structure Generator</h2>
+                <p>Enter SMILES notation to generate 2D molecular structures.</p>
+            </div>
+            <div class="slide">
+                <h2>3D Structure Generator</h2>
+                <p>Generate 3D molecular structures from SMILES notation.</p>
+            </div>
+            <div class="slide">
+                <h2>Upload .pdb Structure</h2>
+                <p>Upload a .pdb file to visualize its 3D structure.</p>
+            </div>
+        </div>
+    </div>
+
+<div class="container">
+    <div class="card">
+        <h1>2D Structure Generator</h1>
+        <form action="/submit" method="post">
+            <img src="{{ url_for('static', filename='smileys_to_2D.png') }}">
+            <label for="formula_2d">Enter SMILES for 2D Structure:</label>
+            <input type="text" id="formula_2d" name="formula_2d" placeholder="Enter SMILES for 2D Structure">
+            <input type="submit" value="Generate 2D Structure">
+        </form>
+    </div>
+
+    <div class="card">
+        <h1>3D Structure Generator</h1>
+        <form action="/submit" method="post">
+            <img src="{{ url_for('static', filename='smileys_to_2D.png') }}">
+            <label for="formula_3d">Enter SMILES for 3D Structure:</label>
+            <input type="text" id="formula_3d" name="formula_3d" placeholder="Enter SMILES for 3D Structure">
+            <input type="submit" value="Generate 3D Structure">
+        </form>
+    </div>
+
+    <div class="card">
+        <h1>.mol Structure Generator</h1>
+        <form action="/submit" method="post">
+            <img src="{{ url_for('static', filename='smileys_to_2D.png') }}">
+            <label for="smiles_to_mol">Enter SMILES for .mol Structure:</label>
+            <input type="text" id="smiles_to_mol" name="smiles_to_mol" placeholder="Enter SMILES for .mol Structure">
+            <input type="submit" value="Generate .mol Structure">
+        </form>
+    </div>
+
+    <div class="card">
+        <h1>.pdb Structure Generator</h1>
+        <form action="/submit" method="post">
+            <img src="{{ url_for('static', filename='smileys_to_2D.png') }}">
+            <label for="smiles_to_pdb">Enter SMILES for .pdb Structure:</label>
+            <input type="text" id="smiles_to_pdb" name="smiles_to_pdb" placeholder="Enter SMILES for .pdb Structure">
+            <input type="submit" value="Generate .pdb Structure">
+        </form>
+    </div>
+
+    <div class="card">
+        <h1>.sdf Structure Generator</h1>
+        <form action="/submit" method="post">
+            <img src="{{ url_for('static', filename='smileys_to_2D.png') }}">
+            <label for="smiles_to_sdf">Enter SMILES for .sdf Structure:</label>
+            <input type="text" id="smiles_to_sdf" name="smiles_to_sdf" placeholder="Enter SMILES for .sdf Structure">
+            <input type="submit" value="Generate .sdf Structure">
+        </form>
+    </div>
+
+    <div class="card">
+    <h1>3D Structure Generator</h1>
+    <img src="{{ url_for('static', filename='smileys_to_2D.png') }}">
+    <form action="/upload_pdb" method="post" enctype="multipart/form-data">
+        <input type="file" name="pdb_file" accept=".pdb">
+        <select name="visualization_type" id="visualization_type">
+            <option value="wireframe">Wireframe</option>
+            <option value="ball_and_stick">Ball-and-Stick</option>
+            <option value="stick">Stick</option>
+            <option value="space_filling">Space Filling</option>
+        </select>
+        <button type="submit">Upload</button>
+    </form>
+</div>
+
+
+    <div class="card">
+    <h1>Molecule Structure Converters</h1>
+    <form action="/submitMol" method="post">
+        <img src="{{ url_for('static', filename='smileys_to_2D.png') }}">
+        <label for="smiles_converter">Enter SMILES:</label>
+        <input type="text" id="smiles_converter" name="smiles_converter" placeholder="Enter SMILES">
+        <select name="conversion_type" id="conversion_type">
+            <option value="sdf">Convert to .sdf</option>
+            <option value="pdb">Convert to .pdb</option>
+            <option value="mol">Convert to .mol</option>
+        </select>
+        <input type="submit" value="Convert">
+    </form>
+</div>
+
+
+</div>
+
+
+<script>
+    // JavaScript for automatic sliding of carousel
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    setInterval(() => {
+        slides[currentIndex].style.transform = 'translateX(-100%)';
+        currentIndex = (currentIndex + 1) % totalSlides;
+        slides[currentIndex].style.transform = 'translateX(0)';
+    }, 5000); // Change slide every 5 seconds (adjust as needed)
+</script>
+
+</body>
+</html>
